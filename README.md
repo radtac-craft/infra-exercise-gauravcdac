@@ -1,9 +1,50 @@
-# DevOps Exercise #1
+### Standard Configuration
 
-* Deploy a web application to a cloud provider of your choice. This web application can be something you have written yourself or an open-source project.
-* Deploy the web application as a Docker Container.
-* Deploy the Docker Container using Kubernetes.
-* Any supporting infrastructure should be configured and deployed as code (e.g. Terraform)
-* Bonus points for any build and deployment automation employed in the deployment of the web application.
-* Bonus points for demonstrating the ability to deploy, destroy and re-deploy the web application and any supporting infrastructure.
-* Include all code and artefacts you create to complete this exercise within this repository for review.
+Deploy to your Kubernetes cluster using the hello-kubernetes.yaml, which contains definitions for the service and deployment objects:
+
+```yaml
+# hello-kubernetes.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-kubernetes
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: hello-kubernetes
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-kubernetes
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-kubernetes
+  template:
+    metadata:
+      labels:
+        app: hello-kubernetes
+    spec:
+      containers:
+      - name: hello-kubernetes
+        image: hello-kubernetes:1.0
+        ports:
+        - containerPort: 8080
+```
+
+```bash
+$ kubectl apply -f yaml/hello-kubernetes.yaml
+```
+
+```bash
+$ kubectl get service hello-kubernetes
+```
+
+## Build Container Image
+
+PS1> docker build --no-cache -f Dockerfile -t "hello-kubernetes:1.0" app
