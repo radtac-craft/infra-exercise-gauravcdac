@@ -1,3 +1,24 @@
+### Prerequisites Install EKSCTL and Kubectl
+
+## Refer this document to install kubectl
+https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+
+```bash
+$ curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+$ sudo mv /tmp/eksctl /usr/local/bin
+```
+
+### To create the cluster
+
+## To configure AWS
+```bash
+$ aws configure
+```
+
+## To create a single node cluster
+```bash
+$eksctl create cluster -f cluster.yaml --write-kubeconfig --set-kubeconfig-context
+```
 ### Standard Configuration
 
 Deploy to your Kubernetes cluster using the hello-kubernetes.yaml, which contains definitions for the service and deployment objects:
@@ -47,4 +68,6 @@ $ kubectl get service hello-kubernetes
 
 ## Build Container Image
 
-PS1> docker build --no-cache -f Dockerfile -t "hello-kubernetes:1.0" app
+```bash
+$ docker build --no-cache -f Dockerfile -t "hello-kubernetes:1.0" app
+```
